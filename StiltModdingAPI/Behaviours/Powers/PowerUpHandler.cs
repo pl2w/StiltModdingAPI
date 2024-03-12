@@ -1,6 +1,4 @@
-﻿using Harmony;
-using HarmonyLib;
-using MelonLoader;
+﻿using HarmonyLib;
 using Rekt.Game;
 using Rekt.Refs;
 using System;
@@ -12,20 +10,24 @@ namespace StiltModdingAPI.Powers
 {
     public static class PowerUpHandler
     {
-        public static void RegisterPowerUp(Type powerUp)
+        public static void RegisterPowerUp(Type powerUp, string powerUpName, Sprite powerUpicon)
         {
             PowerUp power = (PowerUp)Activator.CreateInstance(powerUp);
+            Traverse powerUpsTraverse = Traverse.Create(typeof(PowerUps));
+            Dictionary<PowerUpsEnum, int> lookUpTable = powerUpsTraverse.Field("m_indexLookUp").GetValue<Dictionary<PowerUpsEnum, int>>();
 
-            GameObject powerUpPrefab = new GameObject("ExamplePower");
+            if (lookUpTable.ContainsKey(power.PowerUpType))
+                return;
+
+            GameObject powerUpPrefab = new GameObject(powerUpName);
             powerUpPrefab.SetActive(false);
             powerUpPrefab.AddComponent(powerUp);
 
             PowerUpInfo info = new PowerUpInfo();
             info.m_powerUpType = power.PowerUpType;
             info.m_powerUpStiltPrefab = powerUpPrefab;
+            info.m_powerUpIcon = powerUpicon;
 
-            Traverse powerUpsTraverse = Traverse.Create(typeof(PowerUps));
-            Dictionary<PowerUpsEnum, int> lookUpTable = powerUpsTraverse.Field("m_indexLookUp").GetValue<Dictionary<PowerUpsEnum, int>>();
             lookUpTable.Add(power.PowerUpType, lookUpTable.Count);
             powerUpsTraverse.Field("m_indexLookUp").SetValue(lookUpTable);
 
@@ -40,20 +42,16 @@ namespace StiltModdingAPI.Powers
             collection.m_collection.Add(new RefsCollection.CollectionRef()
             {
                 m_enumId = (int)power.PowerUpType,
-                m_name = "ExamplePower",
+                m_name = powerUpName,
                 m_referencedObject = power
             });
 
             powerUpsTraverse.Field("m_collection").SetValue(collection);
-
-            GivePowerUp(info, StiltHand.Left);
         }
 
         public static void GivePowerUp(PowerUpInfo info, StiltHand hand)
         {
             PlayerController.Instance.m_powerUpController.GivePowerUp(info, hand);
         }
-
-        public static int GetValidPowerUpIndex() => 50;
     }
 }

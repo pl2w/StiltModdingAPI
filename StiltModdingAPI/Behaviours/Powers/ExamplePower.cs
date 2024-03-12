@@ -7,7 +7,7 @@ namespace StiltModdingAPI.Behaviours.Powers
 {
     public class ExamplePower : PowerUp
     {
-        public override PowerUps.PowerUpsEnum PowerUpType => (PowerUps.PowerUpsEnum)PowerUpHandler.GetValidPowerUpIndex();
+        public override PowerUps.PowerUpsEnum PowerUpType => (PowerUps.PowerUpsEnum)50;
 
         void Update()
         {
