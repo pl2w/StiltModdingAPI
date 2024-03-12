@@ -11,8 +11,8 @@ namespace StiltModdingAPI.Behaviours.Powers
 
         void Update()
         {
-            if (enabled)
-                Player.transform.Rotate(Vector3.up, 1 * Time.deltaTime);
+            if(enabled)
+                Player.Position += new Vector3(0, 1, 0) * Time.deltaTime;
         }
     }
 }

@@ -69,11 +69,5 @@ namespace StiltModdingAPI
 
             return default;
         }
-
-        void OnGUI()
-        {
-            if (DebugInput.WasKeyPressed(UnityEngine.InputSystem.Key.U))
-                PowerUpHandler.GiveExample();
-        }
     }
 }
