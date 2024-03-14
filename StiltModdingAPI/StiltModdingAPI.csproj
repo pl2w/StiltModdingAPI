@@ -424,7 +424,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Behaviours\Inputs.cs" />
-    <Compile Include="Behaviours\Powers\ExamplePower.cs" />
     <Compile Include="Behaviours\Powers\PowerUpHandler.cs" />
     <Compile Include="Behaviours\Utils.cs" />
     <Compile Include="Plugin.cs" />
