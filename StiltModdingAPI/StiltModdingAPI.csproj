@@ -423,9 +423,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Behaviours\Events\StiltEventHandler.cs" />
     <Compile Include="Behaviours\Inputs.cs" />
     <Compile Include="Behaviours\Powers\PowerUpHandler.cs" />
-    <Compile Include="Behaviours\Utils.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
