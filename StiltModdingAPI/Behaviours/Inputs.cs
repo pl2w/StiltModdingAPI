@@ -1,13 +1,11 @@
-﻿using Rekt.Development;
-using StiltModdingAPI.Powers;
+using StiltModdingAPI.Behaviours.Events;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
+using UnityEngine.XR.Interaction.Toolkit;
 
-namespace StiltModdingAPI
-{
-    public class Inputs : MonoBehaviour 
-    {
+namespace StiltModdingAPI {
+    public class Inputs : MonoBehaviour {
         public static bool LeftGripDown = false;
         public static bool RightGripDown = false;
         public static bool LeftTriggerDown = false;
@@ -29,38 +27,42 @@ namespace StiltModdingAPI
         public static Vector2 LeftThumbstick = Vector2.zero;
         public static Vector2 RightThumbstick = Vector2.zero;
 
-        public static InputDevice leftController;
-        public static InputDevice rightController;
+        public static XRController leftController;
+        public static XRController rightController;
 
-        void Start()
-        {
-            leftController = GetControllerDevice(XRNode.LeftHand);
-            rightController = GetControllerDevice(XRNode.RightHand);
+        void Awake() =>
+            StiltEventHandler.OnSceneLoaded += SceneLoaded;
+
+        private void SceneLoaded(bool ContainsPlayerPrefab, bool IsMultiplayerScene) {
+            if (!ContainsPlayerPrefab) return;
+            leftController = GameObject.Find("Core/PlayerPrefab/Camera Offset/LeftController").AddComponent<XRController>();
+            rightController = GameObject.Find("Core/PlayerPrefab/Camera Offset/RightController").AddComponent<XRController>();
+            GameObject.Find("Core/PlayerPrefab/Camera Offset/LeftController").GetComponent<XRController>().controllerNode = XRNode.LeftHand;
+            GameObject.Find("Core/PlayerPrefab/Camera Offset/RightController").GetComponent<XRController>().controllerNode = XRNode.RightHand;
+            //I had to do this because the old system didn't work
         }
 
-        void Update()
-        {
-            leftController.TryGetFeatureValue(CommonUsages.primaryButton, out LeftPrimaryButtonDown);
-            leftController.TryGetFeatureValue(CommonUsages.secondaryButton, out LeftSecondaryButtonDown);
-            leftController.TryGetFeatureValue(CommonUsages.grip, out LeftGripFloat);
-            leftController.TryGetFeatureValue(CommonUsages.trigger, out LeftTriggerFloat);
-            leftController.TryGetFeatureValue(CommonUsages.gripButton, out LeftGripDown);
-            leftController.TryGetFeatureValue(CommonUsages.triggerButton, out LeftTriggerDown);
-            leftController.TryGetFeatureValue(CommonUsages.primary2DAxis, out LeftThumbstick);
-            leftController.TryGetFeatureValue(CommonUsages.primary2DAxisClick, out LeftThumbstickDown);
+        void Update() {
+            leftController.inputDevice.TryGetFeatureValue(CommonUsages.primaryButton, out LeftPrimaryButtonDown);
+            leftController.inputDevice.TryGetFeatureValue(CommonUsages.secondaryButton, out LeftSecondaryButtonDown);
+            leftController.inputDevice.TryGetFeatureValue(CommonUsages.grip, out LeftGripFloat);
+            leftController.inputDevice.TryGetFeatureValue(CommonUsages.trigger, out LeftTriggerFloat);
+            leftController.inputDevice.TryGetFeatureValue(CommonUsages.gripButton, out LeftGripDown);
+            leftController.inputDevice.TryGetFeatureValue(CommonUsages.triggerButton, out LeftTriggerDown);
+            leftController.inputDevice.TryGetFeatureValue(CommonUsages.primary2DAxis, out LeftThumbstick);
+            leftController.inputDevice.TryGetFeatureValue(CommonUsages.primary2DAxisClick, out LeftThumbstickDown);
 
-            rightController.TryGetFeatureValue(CommonUsages.primaryButton, out RightPrimaryButtonDown);
-            rightController.TryGetFeatureValue(CommonUsages.secondaryButton, out RightSecondaryButtonDown);
-            rightController.TryGetFeatureValue(CommonUsages.grip, out RightGripFloat);
-            rightController.TryGetFeatureValue(CommonUsages.trigger, out RightTriggerFloat);
-            rightController.TryGetFeatureValue(CommonUsages.gripButton, out RightGripDown);
-            rightController.TryGetFeatureValue(CommonUsages.triggerButton, out RightTriggerDown);
-            rightController.TryGetFeatureValue(CommonUsages.primary2DAxis, out RightThumbstick);
-            rightController.TryGetFeatureValue(CommonUsages.primary2DAxisClick, out RightThumbstickDown);
+            rightController.inputDevice.TryGetFeatureValue(CommonUsages.primaryButton, out RightPrimaryButtonDown);
+            rightController.inputDevice.TryGetFeatureValue(CommonUsages.secondaryButton, out RightSecondaryButtonDown);
+            rightController.inputDevice.TryGetFeatureValue(CommonUsages.grip, out RightGripFloat);
+            rightController.inputDevice.TryGetFeatureValue(CommonUsages.trigger, out RightTriggerFloat);
+            rightController.inputDevice.TryGetFeatureValue(CommonUsages.gripButton, out RightGripDown);
+            rightController.inputDevice.TryGetFeatureValue(CommonUsages.triggerButton, out RightTriggerDown);
+            rightController.inputDevice.TryGetFeatureValue(CommonUsages.primary2DAxis, out RightThumbstick);
+            rightController.inputDevice.TryGetFeatureValue(CommonUsages.primary2DAxisClick, out RightThumbstickDown);
         }
 
-        public static InputDevice GetControllerDevice(XRNode node)
-        {
+        public static InputDevice GetControllerDevice(XRNode node) {
             List<InputDevice> list = new List<InputDevice>();
             InputDevices.GetDevicesAtXRNode(node, list);
 
