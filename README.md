@@ -1,5 +1,7 @@
 This mod does nothing on it's own, it may be a requirement for other mods though...
 
+![Downloads](https://img.shields.io/github/downloads/pl2w/StiltModdingAPI/total.svg)
+
 # DOCUMENTATION:
 This documentation will show you how to use the stilt modding api correctly.
 
