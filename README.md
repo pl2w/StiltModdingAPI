@@ -36,7 +36,7 @@ sorry to anyone for any inconvenience
 # INPUTS:
 first, remember to add `using StiltModdingAPI.StiltInputs;`.
 Controller inputs are as easy as doing:
-```
+```CS
         void Update() {
             //using left trigger as an example
             if (Inputs.LeftTriggerDown)
